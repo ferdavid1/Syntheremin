@@ -2,9 +2,9 @@
 - Code for Arduino 6-wavetable synth with ultrasonic sensor theremin module
 - Waveforms: SINE, TRIANGLE, SQUARE, SAW, RAMP, NOISE
 
-http://www.instructables.com/id/Turn-your-Arduino-into-a-4-voice-wavetable-synth-w/
+- http://www.instructables.com/id/Turn-your-Arduino-into-a-4-voice-wavetable-synth-w/
 
-- Wiring:
+# Wiring
 
 	## Synth
 
