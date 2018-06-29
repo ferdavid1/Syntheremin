@@ -2,7 +2,7 @@
 
 //Hardware cHIGHnectiHIGHs:
 
-//                    +10µF 
+//                    +10µF
 //PIN 11 ---[ 1k ]--+---||--->> Audio out
 //                  |
 //                 === 10nF
@@ -14,20 +14,20 @@
 #include <vector>
 #define trig 13
 #define echo 12
-const int pitchpin = 1; // Pitch Pot
-const int tonelengthpin = 2; // Tone Length Pot
-const int modpin = 3; // Mod pot
+const int pitchpin = 0; // Pitch Pot (analog)
+const int tonelengthpin = 1; // Tone Length Pot (analog)
+const int modpin = 2; // Mod pot (analog)
 // Waveform switches
-const int switch1 = 4; 
-const int switch2 = 5; 
-const int switch3 = 6; 
-const int switch4 = 7; 
-const int switch5 = 8;
-const int switch6 = 9;
+const int switch1 = 2;
+const int switch2 = 3;
+const int switch3 = 4;
+const int switch4 = 5;
+const int switch5 = 6;
+const int switch6 = 7;
 //Envelopes
-const int envelopeswitch = 10;
-const int sequenceinterval = 11; // Sequence Interval Pot
-const int LEDPin = 14;
+const int envelopeswitch = 8;
+const int sequenceinterval = 3; // Sequence Interval Pot (analog)
+const int LEDPin = 9;
 
 synth edgar;    //-Make a synth
 
@@ -46,7 +46,7 @@ void update() {
   char switch5state = digitalRead(switch5);
   char switch6state = digitalRead(switch6);
   int envelope = analogRead(envelopeswitch); // not sure what the output of the 4-way switch will be. if cant figure out, use a pot for envelope and threshold
-  switch(envelope) {
+  switch (envelope) {
     case 1:
       envel = ENVELOPE0;
     case 2:
@@ -56,18 +56,18 @@ void update() {
     case 4:
       envel = ENVELOPE3;
   }
-  
-  char switchstates[] = {switch1state, switch2state, switch3state, switch4state, switch5state, switch6state}; 
+
+  char switchstates[] = {switch1state, switch2state, switch3state, switch4state, switch5state, switch6state};
   Serial.println(switchstates);
   std::vector< int > onswitches;
-  for (int i=0; i < 6; i++) {
+  for (int i = 0; i < 6; i++) {
     if (switchstates[i] == "HIGH") {
       onswitches.push_back(i);
     }
   }
-  int onsize = sizeof(onswitches)/sizeof(int);
-  for (int i=0; i < onsize+1; i++) {
-      edgar.setupVoice(i,onswitches[i],pitch,envel,tonelength,mod);  
+  int onsize = sizeof(onswitches) / sizeof(int);
+  for (int i = 0; i < onsize + 1; i++) {
+    edgar.setupVoice(i, onswitches[i], pitch, envel, tonelength, mod);
   }
   // 0,1,2,3,4,5 = SINE,TRIANGLE,SQUARE,SAW,RAMP,NOISE
 }
@@ -79,8 +79,8 @@ void setup() {
 }
 void loop()
 {
-  if (millis()%1000 == 0) {
-    update(); // update switch configurations to see if they've been changed, every second 
+  if (millis() % 1000 == 0) {
+    update(); // update switch configurations to see if they've been changed, every second
   }
   digitalWrite(trig, LOW);
   delayMicroseconds(2);
@@ -90,10 +90,10 @@ void loop()
   duration = pulseIn(echo, HIGH);
   distance = microsecondsToCentimeters(duration);
 
-  // tone(8, distance, 40); pin 8 is the piezo out 
+  // tone(8, distance, 40); pin 8 is the piezo out
   sequenceaddition = analogRead(sequenceinterval);
-  for (int i=0; i < onsize+1; i++){
-    edgar.setFrequency(i,distance+(sequenceaddition*i));
+  for (int i = 0; i < onsize + 1; i++) {
+    edgar.setFrequency(i, distance + (sequenceaddition * i));
     edgar.trigger(i);
     delay(1000);
   }
