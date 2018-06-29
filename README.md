@@ -13,13 +13,17 @@
 - Ultrasonic Sensor ('US')
 
 	US VCC -> Arduino 5v
+
 	US GND -> Arduino GND(1st)
+	
 	US Trig -> Arduino pin 13
+	
 	US Echo -> Arduino pin 12
 
 - Piezo Sensor ('PS')
 	
 	PS Red -> Arduino pin 8
+	
 	PS Black -> Arduino GND(2nd)
 
 - Wire out to speakers with 1/4 in. jack
