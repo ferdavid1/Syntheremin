@@ -4,7 +4,7 @@
 
 http://www.instructables.com/id/Turn-your-Arduino-into-a-4-voice-wavetable-synth-w/
 
-- Wiring 
+- Wiring:
 
 	Synth
 		follow the instructables directions, except use pin 11 instead of 6 and 1K resistor instead of 2.2K
