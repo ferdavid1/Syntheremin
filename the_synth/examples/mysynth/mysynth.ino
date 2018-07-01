@@ -32,7 +32,7 @@ const int LEDPin = 9;
 synth edgar;    //-Make a synth
 
 void update() {
-  // use 4 arduino toggle switches to choose SINE,TRIANGLE,SQUARE,SAW,RAMP,NOISE
+  // use 6 arduino toggle switches to choose SINE,TRIANGLE,SQUARE,SAW,RAMP,NOISE
   // add a pot for pitch (5th parameter in setupVoice)
   int pitch = analogRead(pitchpin);
   int tonelength = analogRead(tonelengthpin);
@@ -79,9 +79,6 @@ void setup() {
 }
 void loop()
 {
-  if (millis() % 1000 == 0) {
-    update(); // update switch configurations to see if they've been changed, every second
-  }
   digitalWrite(trig, LOW);
   delayMicroseconds(2);
   digitalWrite(trig, HIGH);
@@ -97,4 +94,8 @@ void loop()
     edgar.trigger(i);
     delay(1000);
   }
+  //  if (millis() % 1000 == 0) {
+//    update(); // update switch configurations to see if they've been changed, every second
+//  }
+  update();
 }
