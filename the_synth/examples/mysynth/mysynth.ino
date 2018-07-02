@@ -2,7 +2,7 @@
 
 //Hardware cHIGHnectiHIGHs:
 
-//                    +10ÂµF
+//                    +10µF
 //PIN 11 ---[ 1k ]--+---||--->> Audio out
 //                  |
 //                 === 10nF
@@ -18,14 +18,14 @@ const int pitchpin = 0; // Pitch Pot (analog)
 const int tonelengthpin = 1; // Tone Length Pot (analog)
 const int modpin = 2; // Mod pot (analog)
 // Waveform switches
-const int switch1 = 2;
-const int switch2 = 3;
-const int switch3 = 4;
-const int switch4 = 5;
-const int switch5 = 6;
-const int switch6 = 7;
+const int switch1 = 2; // sine
+const int switch2 = 3; // triangle
+const int switch3 = 4; // square 
+const int switch4 = 5; // saw
+const int switch5 = 6; // ramp 
+const int switch6 = 7; // noise
 //Envelopes
-const int envelopeswitch = 8;
+const int envelopeswitch = 8 // 4-way envelope switch (or potentially another pot)
 const int sequenceinterval = 3; // Sequence Interval Pot (analog)
 const int LEDPin = 9;
 
