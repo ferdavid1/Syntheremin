@@ -2,7 +2,7 @@
 
 //Hardware cHIGHnectiHIGHs:
 
-//                    +10µF
+//                    +10ï¿½F
 //PIN 11 ---[ 1k ]--+---||--->> Audio out
 //                  |
 //                 === 10nF
@@ -11,6 +11,7 @@
 
 #include <StandardCplusplus.h>
 #include <synth.h>
+// IMPORT POWER LIBRARY
 #include <vector>
 #define trig 13
 #define echo 12
@@ -67,15 +68,15 @@ void update() {
   }
   int onsize = sizeof(onswitches) / sizeof(int);
   for (int i = 0; i < onsize + 1; i++) {
-    edgar.setupVoice(i, onswitches[i], pitch, envel, tonelength, mod);
+    edgar.setupVoice(i, onswitches[i], pitch, envel, tonelength, mod); // second parameter: 0,1,2,3,4,5 = SINE,TRIANGLE,SQUARE,SAW,RAMP,NOISE
   }
-  // 0,1,2,3,4,5 = SINE,TRIANGLE,SQUARE,SAW,RAMP,NOISE
 }
 void setup() {
-  edgar.begin();                                   //-Start it up
+  edgar.begin(); //-Start it up
   update();
   pinMode(OUTPUT, LEDPin);
   digitalWrite(LEDPin, HIGH);
+  // ADD CALL TO POWER LIBRARY FOR TIMEOUT DURATION (MAKE IT SOMETHING LIKE 3 HRS)
 }
 void loop()
 {
@@ -92,10 +93,10 @@ void loop()
   for (int i = 0; i < onsize + 1; i++) {
     edgar.setFrequency(i, distance + (sequenceaddition * i));
     edgar.trigger(i);
-    delay(1000);
   }
   //  if (millis() % 1000 == 0) {
 //    update(); // update switch configurations to see if they've been changed, every second
 //  }
   update();
+  // ADD CALL TO THE POWER LIBRARY TO CHECK IF TIMEOUT
 }
