@@ -14,17 +14,14 @@ except (EOFError, KeyboardInterrupt):
 
 print("Press Control-C to exit")
 try:
-	timer = time.time()
 	while True:
 		msg = midiin.get_message()
 		if msg:
 			message, deltatime = msg
-			timer += deltatime
-			print(port_name)
-			print(timer)
-			print(message)
-
-		time.sleep(0.01)
+			import serial
+			with serial.Serial('COM1', 31250) as ser:
+				ser.write(message.encode('utf-8'))
+		time.sleep(0.01)		
 except (KeyboardInterrupt):
 	print('')
 finally:
