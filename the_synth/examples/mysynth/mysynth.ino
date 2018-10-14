@@ -38,6 +38,7 @@ void update() {
   int pitch = analogRead(pitchpin);
   int tonelength = analogRead(tonelengthpin);
   int mod = analogRead(modpin);
+  // INVESTIGATE THE MIN AND MAX VALUES OF int, pitch, tonelength AND MAP THEM from 0 - 127
   //setupVoice( voice[0-3] , waveform[SINE,TRIANGLE,SQUARE,SAW,RAMP,NOISE] , pitch[0-127], envelope[ENVELOPE0-ENVELOPE3], length[0-127], mod[0-127, 64=no mod])
 
   char switch1state = digitalRead(switch1);
@@ -86,11 +87,11 @@ void loop()
   digitalWrite(trig, HIGH);
   delayMicroseconds(10);
   digitalWrite(trig, LOW);
-  duration = pulseIn(echo, HIGH);
-  distance = microsecondsToCentimeters(duration);
+  char duration = pulseIn(echo, HIGH);
+  int distance = microsecondsToCentimeters(duration);
 
   // tone(8, distance, 40); pin 8 is the piezo out
-  sequenceaddition = analogRead(sequenceinterval);
+  int sequenceaddition = analogRead(sequenceinterval);
   for (int i = 0; i < onsize + 1; i++) {
     edgar.setFrequency(i, distance + (sequenceaddition * i));
     edgar.trigger(i);
@@ -100,4 +101,10 @@ void loop()
 //  }
   update();
   // ADD CALL TO THE POWER LIBRARY TO CHECK IF TIMEOUT
+}
+long microsecondsToCentimeters(long microseconds) {
+  // The speed of sound is 340 m/s or 29 microseconds per centimeter.
+  // The ping travels out and back, so to find the distance of the object we
+  // take half of the distance travelled.
+  return microseconds / 29 / 2;
 }
