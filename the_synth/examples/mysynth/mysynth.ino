@@ -29,15 +29,15 @@ const int switch6 = 7; // noise
 const int envelopeswitch = 8; // 4-way envelope switch (or potentially another pot)
 const int sequenceinterval = A3; // Sequence Interval Pot (analog)
 const int LEDPin = 9;
-
+int onsize = 0; // length of the vector of switch modes (HIGH OR LOW)
 synth edgar;    //-Make a synth
 
 void update() {
   // use 6 arduino toggle switches to choose SINE,TRIANGLE,SQUARE,SAW,RAMP,NOISE
-  // map values of int, pitch, tonelength of AnalogRead from 0 - 1023 to 0 - 127? divide them by 8 and round 
+  // map values of int, pitch, tonelength of AnalogRead from 0 - 1023 to 0 - 127? divide them by 8.06 and round 
   int pitch = round(analogRead(pitchpin)/8.06);
-  int tonelength = round(analogRead(tonelengthpin)/8);
-  int mod = round(analogRead(modpin)/8);
+  int tonelength = round(analogRead(tonelengthpin)/8.06);
+  int mod = round(analogRead(modpin)/8.06);
   
   //setupVoice( voice[0-3] , waveform[SINE,TRIANGLE,SQUARE,SAW,RAMP,NOISE] , pitch[0-127], envelope[ENVELOPE0-ENVELOPE3], length[0-127], mod[0-127, 64=no mod])
 
@@ -69,13 +69,13 @@ void update() {
       onswitches.push_back(i);
     }
   }
-  int onsize = sizeof(onswitches) / sizeof(int);
+  onsize = sizeof(onswitches) / sizeof(int);
   for (int i = 0; i < onsize + 1; i++) {
     edgar.setupVoice(i, onswitches[i], pitch, envel, tonelength, mod); // second parameter: 0,1,2,3,4,5 = SINE,TRIANGLE,SQUARE,SAW,RAMP,NOISE
   }
 }
 void setup() {
-  edgar.begin(); //-Start it up
+  edgar.begin(CHA); //-Start it up, with audio output from pin 11
   update();
   pinMode(OUTPUT, LEDPin);
   digitalWrite(LEDPin, HIGH);
@@ -90,18 +90,18 @@ void loop()
   digitalWrite(trig, LOW);
   char duration = pulseIn(echo, HIGH);
   int distance = microsecondsToCentimeters(duration);
-  int onsize = 0;
   // tone(8, distance, 40); pin 8 is the piezo out
   int sequenceaddition = analogRead(sequenceinterval);
+  Serial.println(onsize); // check that it isn't zero. if it is, onsize didn't get updated when update() was called in setup(). 
   for (int i = 0; i < onsize + 1; i++) {
     edgar.setFrequency(i, distance + (sequenceaddition * i));
     edgar.trigger(i);
   }
   //  if (millis() % 1000 == 0) {
-//    update(); // update switch configurations to see if they've been changed, every second
-//  }
+//      update(); // update switch configurations to see if they've been changed, every second
+//    }
   update();
-  Serial.println(onsize); // check that it isn't zero. if it is, onsize didn't get updated. 
+   
   // ADD CALL TO THE POWER LIBRARY TO CHECK IF TIMEOUT
 }
 long microsecondsToCentimeters(long microseconds) {
