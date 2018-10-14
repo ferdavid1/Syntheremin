@@ -15,9 +15,9 @@
 #include <vector>
 #define trig 13
 #define echo 12
-const int pitchpin = 0; // Pitch Pot (analog)
-const int tonelengthpin = 1; // Tone Length Pot (analog)
-const int modpin = 2; // Mod pot (analog)
+const int pitchpin = A0; // Pitch Pot (analog)
+const int tonelengthpin = A1; // Tone Length Pot (analog)
+const int modpin = A2; // Mod pot (analog)
 // Waveform switches
 const int switch1 = 2; // sine
 const int switch2 = 3; // triangle
@@ -26,8 +26,8 @@ const int switch4 = 5; // saw
 const int switch5 = 6; // ramp 
 const int switch6 = 7; // noise
 //Envelopes
-const int envelopeswitch = 8 // 4-way envelope switch (or potentially another pot)
-const int sequenceinterval = 3; // Sequence Interval Pot (analog)
+const int envelopeswitch = 8; // 4-way envelope switch (or potentially another pot)
+const int sequenceinterval = A3; // Sequence Interval Pot (analog)
 const int LEDPin = 9;
 
 synth edgar;    //-Make a synth
@@ -46,7 +46,8 @@ void update() {
   char switch4state = digitalRead(switch4);
   char switch5state = digitalRead(switch5);
   char switch6state = digitalRead(switch6);
-  int envelope = analogRead(envelopeswitch); // not sure what the output of the 4-way switch will be. if cant figure out, use a pot for envelope and threshold
+  int envelope = analogRead(envelopeswitch); // not sure what the output of the 4-way switch will be. if cant figure out, use a pot for envelope and threshold it. For now assuming it will output 1,2,3,or 4
+  int envel = ENVELOPE0; // set default envelope
   switch (envelope) {
     case 1:
       envel = ENVELOPE0;
