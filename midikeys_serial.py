@@ -8,8 +8,8 @@ event_get = pygame.fastevent.get
 event_post = pygame.fastevent.post
 
 pygame.midi.init()
-input_id = pygame.midi.get_default_input_id()
-i = pygame.midi.Input(input_id)
+# print(pygame.midi.get_device_info(3))
+i = pygame.midi.Input(3)
 pygame.display.set_caption("Reading MIDI Keyboard Input")
 screen = pygame.display.set_mode((400,300), RESIZABLE, 32)
 
