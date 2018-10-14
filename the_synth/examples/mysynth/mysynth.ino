@@ -34,11 +34,11 @@ synth edgar;    //-Make a synth
 
 void update() {
   // use 6 arduino toggle switches to choose SINE,TRIANGLE,SQUARE,SAW,RAMP,NOISE
-  // add a pot for pitch (5th parameter in setupVoice)
-  int pitch = analogRead(pitchpin);
-  int tonelength = analogRead(tonelengthpin);
-  int mod = analogRead(modpin);
-  // INVESTIGATE THE MIN AND MAX VALUES OF int, pitch, tonelength AND MAP THEM from 0 - 127
+  // map values of int, pitch, tonelength of AnalogRead from 0 - 1023 to 0 - 127? divide them by 8 and round 
+  int pitch = round(analogRead(pitchpin)/8.06);
+  int tonelength = round(analogRead(tonelengthpin)/8);
+  int mod = round(analogRead(modpin)/8);
+  
   //setupVoice( voice[0-3] , waveform[SINE,TRIANGLE,SQUARE,SAW,RAMP,NOISE] , pitch[0-127], envelope[ENVELOPE0-ENVELOPE3], length[0-127], mod[0-127, 64=no mod])
 
   char switch1state = digitalRead(switch1);
@@ -64,6 +64,7 @@ void update() {
   Serial.println(switchstates);
   std::vector< int > onswitches;
   for (int i = 0; i < 6; i++) {
+    Serial.println(switchstates[i]); // check that at least one of them is "HIGH"
     if (switchstates[i] == "HIGH") {
       onswitches.push_back(i);
     }
@@ -89,7 +90,7 @@ void loop()
   digitalWrite(trig, LOW);
   char duration = pulseIn(echo, HIGH);
   int distance = microsecondsToCentimeters(duration);
-
+  int onsize = 0;
   // tone(8, distance, 40); pin 8 is the piezo out
   int sequenceaddition = analogRead(sequenceinterval);
   for (int i = 0; i < onsize + 1; i++) {
@@ -100,6 +101,7 @@ void loop()
 //    update(); // update switch configurations to see if they've been changed, every second
 //  }
   update();
+  Serial.println(onsize); // check that it isn't zero. if it is, onsize didn't get updated. 
   // ADD CALL TO THE POWER LIBRARY TO CHECK IF TIMEOUT
 }
 long microsecondsToCentimeters(long microseconds) {
