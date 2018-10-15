@@ -21,6 +21,7 @@ try:
 			import serial
 			with serial.Serial('COM1', 31250) as ser:
 				ser.write(message.encode('utf-8'))
+			# print(message)
 		time.sleep(0.01)		
 except (KeyboardInterrupt):
 	print('')
