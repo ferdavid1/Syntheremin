@@ -75,7 +75,7 @@ void update() {
   }
 }
 void setup() {
-  edgar.begin(CHA); //-Start it up, with audio output from pin 11
+  edgar.begin(); //-Start it up, with audio output from pin 11
   update();
   pinMode(OUTPUT, LEDPin);
   digitalWrite(LEDPin, HIGH);
