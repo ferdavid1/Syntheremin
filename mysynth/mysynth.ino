@@ -79,6 +79,7 @@ void setup() {
   update();
   pinMode(OUTPUT, LEDPin);
   digitalWrite(LEDPin, HIGH);
+  Serial.begin(115200);
   // ADD CALL TO POWER LIBRARY FOR TIMEOUT DURATION (MAKE IT SOMETHING LIKE 3 HRS)
 }
 void loop()
